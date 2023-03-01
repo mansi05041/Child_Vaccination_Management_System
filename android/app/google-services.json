@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "111816618003",
+    "project_id": "immunify-404ee",
+    "storage_bucket": "immunify-404ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111816618003:android:6395f0ff9f3344fca6cfe6",
+        "android_client_info": {
+          "package_name": "com.example.child_vaccination"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111816618003-sjc6o1b10auimjk27m5bdj8rcbnpjfof.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.child_vaccination",
+            "certificate_hash": "ea4aa2304b127ea0936ff93a44ec910807b12739"
+          }
+        },
+        {
+          "client_id": "111816618003-vmvc3cddcoceaaaqsuk0ela23vuqnbim.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxGD7SoRPhojujHwBSLg6WQESbPGLkyUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111816618003-vmvc3cddcoceaaaqsuk0ela23vuqnbim.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
