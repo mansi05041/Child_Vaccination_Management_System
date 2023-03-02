@@ -1,5 +1,6 @@
 import 'package:child_vaccination/helper/helperFunction.dart';
 import 'package:child_vaccination/screen/LoginPage.dart';
+import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:child_vaccination/shared/Constant.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: _isSignedIn ? const MyHomePage() : const LoginPage(),
+      home: _isSignedIn
+          ? const MyHomePage(
+              title: '',
+            )
+          : const LoginPage(),
     );
   }
 }
