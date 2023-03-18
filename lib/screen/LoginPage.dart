@@ -191,15 +191,26 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           onPressed: () {},
-                          child: const Text(
-                            "Sign In with Google",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/google.png',
+                                height: 24,
+                              ),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Sign In with Google",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
+
                       // Register the account
                       const SizedBox(
                         height: 15,

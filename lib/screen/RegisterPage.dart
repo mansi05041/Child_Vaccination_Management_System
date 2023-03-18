@@ -211,15 +211,26 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           onPressed: () {},
-                          child: const Text(
-                            "Register with Google",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/google.png',
+                                height: 24,
+                              ),
+                              SizedBox(width: 10),
+                              const Text(
+                                "Register with Google",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
+
                       // login into the account
                       const SizedBox(
                         height: 15,
