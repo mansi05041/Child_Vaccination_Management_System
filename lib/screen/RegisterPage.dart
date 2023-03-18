@@ -1,23 +1,23 @@
-import 'package:child_vaccination/screen/RegisterPage.dart';
-import 'package:child_vaccination/shared/validity.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+import '../shared/validity.dart';
+import 'LoginPage.dart';
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final formkey = GlobalKey<FormState>();
+  final _nameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
+  String name = "";
   String email = "";
   String password = "";
   bool _isLoading = false;
@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           : SingleChildScrollView(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 75),
                 child: Form(
                   key: formkey,
                   child: Column(
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 10),
                       Center(
                         child: Text(
-                          'Unlock exclusive resources and tools for your child\'s success - Login now!',
+                          'Stay one step ahead of infections - Register with IMMUNIFY today!',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
@@ -73,6 +73,37 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundImage: AssetImage('assets/images/logo.png'),
                       ),
                       const SizedBox(height: 8),
+                      // name
+                      TextFormField(
+                        controller: _nameTextController,
+                        validator: (value) => Validator.validateName(
+                            name: _nameTextController.text),
+                        decoration: InputDecoration(
+                          hintText: "Name",
+                          prefixIcon: Icon(
+                            Icons.person_outlined,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            name = val;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 15),
                       // Email
                       TextFormField(
                         controller: _emailTextController,
@@ -146,17 +177,28 @@ class _LoginPageState extends State<LoginPage> {
                           });
                         },
                       ),
-                      // forget password option
-                      const SizedBox(height: 8),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Forget Password ?",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 160, 195, 224),
+                      const SizedBox(height: 15),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: const Text(
+                            "Get Register Now!",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
+                      // Google register option
                       const SizedBox(height: 13),
                       SizedBox(
                         width: double.infinity,
@@ -170,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           onPressed: () {},
                           child: const Text(
-                            "Sign In",
+                            "Register with Google",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -178,40 +220,18 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      // Google Sign In option
-                      const SizedBox(height: 13),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: const Text(
-                            "Sign In with Google",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Register the account
+                      // login into the account
                       const SizedBox(
                         height: 15,
                       ),
                       Text.rich(
                         TextSpan(
-                            text: "Don't have an account?",
+                            text: "Already have an Account?",
                             style: const TextStyle(
                                 color: Colors.blueGrey, fontSize: 14),
                             children: <TextSpan>[
                               TextSpan(
-                                  text: "Register here",
+                                  text: "Login here",
                                   style: const TextStyle(
                                       color: Colors.grey,
                                       decoration: TextDecoration.underline),
@@ -221,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const RegisterPage(),
+                                              const LoginPage(),
                                         ),
                                       );
                                     })
