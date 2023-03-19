@@ -1,3 +1,7 @@
+import 'package:child_vaccination/helper/helperFunction.dart';
+import 'package:child_vaccination/screen/MyHomePage.dart';
+import 'package:child_vaccination/services/authenticationService.dart';
+import 'package:child_vaccination/widget/snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String password = "";
   bool _isLoading = false;
   bool passwordVisible = true;
+  AuthenticationService authenticationService = AuthenticationService();
 
   @override
   Widget build(BuildContext context) {
@@ -177,6 +182,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           });
                         },
                       ),
+                      // register
                       const SizedBox(height: 15),
                       SizedBox(
                         width: double.infinity,
@@ -188,7 +194,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            register();
+                          },
                           child: const Text(
                             "Get Register Now!",
                             style: TextStyle(
@@ -264,5 +272,39 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
     );
+  }
+
+  register() async {
+    if (formkey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      await authenticationService
+          .registerUserWithEmailAndPassword(name, email, password)
+          .then((value) async {
+        if (value == true) {
+          // saving the shared prefernce state
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserEmailSF(email);
+          await HelperFunction.saveUserNameSF(name);
+
+          // move to home page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MyHomePage(),
+            ),
+          );
+          _emailTextController.clear();
+          _nameTextController.clear();
+          _passwordTextController.clear();
+        } else {
+          showSnackbar(context, Colors.redAccent, value);
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      });
+    }
   }
 }
