@@ -274,6 +274,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  // register with email and password
   register() async {
     if (formkey.currentState!.validate()) {
       setState(() {

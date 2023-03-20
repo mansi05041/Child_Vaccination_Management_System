@@ -1,5 +1,8 @@
+import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:child_vaccination/screen/RegisterPage.dart';
+import 'package:child_vaccination/services/authenticationService.dart';
 import 'package:child_vaccination/shared/validity.dart';
+import 'package:child_vaccination/widget/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
@@ -22,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   String password = "";
   bool _isLoading = false;
   bool passwordVisible = true;
-
+  AuthenticationService authenticationService = AuthenticationService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,6 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 13),
+                      // login into App
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
@@ -168,7 +172,9 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            login();
+                          },
                           child: const Text(
                             "Sign In",
                             style: TextStyle(
@@ -244,5 +250,33 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
     );
+  }
+
+  login() async {
+    if (formkey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      await authenticationService
+          .loginInUserWithEmailAndPassword(email, password)
+          .then((value) async {
+        if (value == true) {
+          // move to home page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MyHomePage(),
+            ),
+          );
+          _emailTextController.clear();
+          _passwordTextController.clear();
+        } else {
+          showSnackbar(context, Colors.redAccent, value);
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      });
+    }
   }
 }

@@ -3,13 +3,30 @@ import 'package:child_vaccination/helper/helperFunction.dart';
 import 'package:child_vaccination/services/databaseService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AuthenticationService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // login
+  Future loginInUserWithEmailAndPassword(String email, String password) async {
+    try {
+      User user = (await firebaseAuth.signInWithEmailAndPassword(
+              email: email, password: password))
+          .user!;
+      if (user != null) {
+        return true;
+      }
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
 
-// register
+  // register with googleSign in
+
+  // register with email and password
   Future registerUserWithEmailAndPassword(
       String name, String email, String password) async {
     try {
