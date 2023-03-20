@@ -1,5 +1,6 @@
 import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:child_vaccination/screen/RegisterPage.dart';
+import 'package:child_vaccination/screen/ResetPassword.dart';
 import 'package:child_vaccination/services/authenticationService.dart';
 import 'package:child_vaccination/shared/validity.dart';
 import 'package:child_vaccination/widget/snackbar.dart';
@@ -152,7 +153,9 @@ class _LoginPageState extends State<LoginPage> {
                       // forget password option
                       const SizedBox(height: 8),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          forgetPassword();
+                        },
                         child: const Text(
                           "Forget Password ?",
                           style: TextStyle(
@@ -252,6 +255,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // login function
   login() async {
     if (formkey.currentState!.validate()) {
       setState(() {
@@ -278,5 +282,16 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
     }
+  }
+
+  // forget password
+  forgetPassword() {
+    // move to resetPassword page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ResetPassword(),
+      ),
+    );
   }
 }
