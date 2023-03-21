@@ -218,7 +218,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            registerWithGoogle();
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -307,5 +309,28 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       });
     }
+  }
+
+  // register with google
+  registerWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await authenticationService.RegisterWithGoogle().then((value) async {
+      if (value == true) {
+        // move to home page
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MyHomePage(),
+          ),
+        );
+      } else {
+        showSnackbar(context, Colors.redAccent, value);
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
   }
 }

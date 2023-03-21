@@ -25,6 +25,46 @@ class AuthenticationService {
   }
 
   // register with googleSign in
+  Future RegisterWithGoogle() async {
+    try {
+      if (kIsWeb) {
+        GoogleAuthProvider authProvider = GoogleAuthProvider();
+        final UserCredential userCredential =
+            await firebaseAuth.signInWithPopup(authProvider);
+        User? user = userCredential.user!;
+        // call our database service to update the user data
+        DataBaseService(uid: user.uid)
+            .updateUserData(user.displayName ?? "User", user.email!);
+
+        await HelperFunction.saveUserLoggedInStatus(true);
+        await HelperFunction.saveUserEmailSF(user.email!);
+        await HelperFunction.saveUserNameSF(user.displayName!);
+        return true;
+      } else {
+        final GoogleSignInAccount? googleSignInAccount =
+            await _googleSignIn.signIn();
+        final GoogleSignInAuthentication? googleSignInAuthentication =
+            await googleSignInAccount?.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication?.accessToken,
+          idToken: googleSignInAuthentication?.idToken,
+        );
+        User? user = (await firebaseAuth.signInWithCredential(credential)).user;
+        if (user != null) {
+          // call our database service to update the user data
+          DataBaseService(uid: user.uid)
+              .updateUserData(user.displayName ?? "User", user.email!);
+          // saving the shared prefernce state
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserEmailSF(user.email!);
+          await HelperFunction.saveUserNameSF(user.displayName!);
+        }
+        return true;
+      }
+    } catch (e) {
+      return 'Error in Registering with Google. Try Again';
+    }
+  }
 
   // register with email and password
   Future registerUserWithEmailAndPassword(
