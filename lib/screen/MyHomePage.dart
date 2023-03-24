@@ -1,9 +1,9 @@
-import 'package:child_vaccination/screen/pages/Home.dart';
-import 'package:child_vaccination/screen/pages/Profile.dart';
+import 'package:child_vaccination/screen/Home.dart';
+import 'package:child_vaccination/screen/Profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:child_vaccination/screen/pages/SettingScreen.dart';
+import 'package:child_vaccination/screen/SettingScreen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MyHomePage extends StatefulWidget {
