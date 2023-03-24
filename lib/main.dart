@@ -53,12 +53,18 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // theme: ThemeData(
+      //   primaryColor: Color.fromARGB(255, 160, 195, 224),
+      //   scaffoldBackgroundColor: Colors.white,
+      // ),
+      // debugShowCheckedModeBanner: false,
+      // home: _isSignedIn ? const MyHomePage() : const LoginPage(),
       theme: ThemeData(
         primaryColor: Color.fromARGB(255, 160, 195, 224),
         scaffoldBackgroundColor: Colors.white,
       ),
       debugShowCheckedModeBanner: false,
-      home: _isSignedIn ? const MyHomePage() : const LoginPage(),
+      home: MyHomePage(),
     );
   }
 }

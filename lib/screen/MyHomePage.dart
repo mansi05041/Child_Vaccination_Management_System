@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -11,6 +13,31 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+        child: GNav(
+          backgroundColor: Color.fromARGB(255, 25, 76, 117),
+          color: Colors.white,
+          activeColor: Colors.white,
+          tabBackgroundColor: Color.fromARGB(255, 67, 93, 115),
+          gap: 8,
+          padding: EdgeInsets.all(15),
+          tabs: const [
+            GButton(
+              icon: Icons.home,
+              text: 'Home',
+            ),
+            GButton(
+              icon: Icons.account_circle_rounded,
+              text: 'Profile',
+            ),
+            GButton(
+              icon: Icons.settings,
+              text: 'Settings',
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
             decoration: BoxDecoration(
