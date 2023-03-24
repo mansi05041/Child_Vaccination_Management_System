@@ -22,7 +22,37 @@ class AuthenticationService {
     }
   }
 
-  // register with googleSign in
+  // signin with googleSign in
+  Future SignInWithGoogle() async {
+    try {
+      if (kIsWeb) {
+        GoogleAuthProvider authProvider = GoogleAuthProvider();
+        final UserCredential userCredential =
+            await firebaseAuth.signInWithPopup(authProvider);
+        User? user = userCredential.user!;
+        if (user != null) {
+          return true;
+        }
+      } else {
+        final GoogleSignInAccount? googleSignInAccount =
+            await _googleSignIn.signIn();
+        final GoogleSignInAuthentication? googleSignInAuthentication =
+            await googleSignInAccount?.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication?.accessToken,
+          idToken: googleSignInAuthentication?.idToken,
+        );
+        User? user = (await firebaseAuth.signInWithCredential(credential)).user;
+        if (user != null) {
+          return true;
+        }
+      }
+    } catch (e) {
+      return 'Error in SignIn with Google. Try Again';
+    }
+  }
+
+  // register with google
   Future RegisterWithGoogle() async {
     try {
       if (kIsWeb) {
@@ -56,8 +86,8 @@ class AuthenticationService {
           await HelperFunction.saveUserLoggedInStatus(true);
           await HelperFunction.saveUserEmailSF(user.email!);
           await HelperFunction.saveUserNameSF(user.displayName!);
+          return true;
         }
-        return true;
       }
     } catch (e) {
       return 'Error in Registering with Google. Try Again';

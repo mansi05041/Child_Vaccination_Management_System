@@ -1,3 +1,4 @@
+import 'package:child_vaccination/helper/helperFunction.dart';
 import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:child_vaccination/screen/RegisterPage.dart';
 import 'package:child_vaccination/screen/ResetPassword.dart';
@@ -199,7 +200,9 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            loginWithGoogle();
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -293,5 +296,28 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context) => const ResetPassword(),
       ),
     );
+  }
+
+  // login with google
+  loginWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await authenticationService.SignInWithGoogle().then((value) {
+      if (value == true) {
+        // move to home page
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MyHomePage(),
+          ),
+        );
+      } else {
+        showSnackbar(context, Colors.redAccent, value);
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
   }
 }
