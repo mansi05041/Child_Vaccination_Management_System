@@ -7,10 +7,15 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Settings Screen',
-        style: TextStyle(fontSize: 25),
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 160, 195, 224),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.only(top: 20),
+          height: 100,
+          width: 500,
+          decoration: BoxDecoration(color: Color.fromARGB(255, 21, 58, 88)),
+        ),
       ),
     );
   }

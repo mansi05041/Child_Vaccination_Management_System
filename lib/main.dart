@@ -1,6 +1,7 @@
 import 'package:child_vaccination/helper/helperFunction.dart';
 import 'package:child_vaccination/screen/LoginPage.dart';
 import 'package:child_vaccination/screen/MyHomePage.dart';
+import 'package:child_vaccination/screen/pages/Profile.dart';
 import 'package:child_vaccination/shared/Constant.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -59,12 +60,18 @@ class _MyAppState extends State<MyApp> {
       // ),
       // debugShowCheckedModeBanner: false,
       // home: _isSignedIn ? const MyHomePage() : const LoginPage(),
-      theme: ThemeData(
-        primaryColor: Color.fromARGB(255, 160, 195, 224),
-        scaffoldBackgroundColor: Colors.white,
-      ),
+      // theme: ThemeData(
+      //   primaryColor: Color.fromARGB(255, 160, 195, 224),
+      //   scaffoldBackgroundColor: Colors.white,
+      // ),
+      // debugShowCheckedModeBanner: false,
+      // home: MyHomePage(),
+      initialRoute: '/',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      routes: {
+        '/': (context) => MyHomePage(),
+        '/registerChild': (context) => RegisterChild(),
+      },
     );
   }
 }
