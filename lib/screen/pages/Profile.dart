@@ -22,7 +22,7 @@ class Profile extends StatelessWidget {
             color: Colors.blueAccent,
             child: Center(
               child: Text(
-                "helena Joshua",
+                "helena Joshua", // change the name using shared preference
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -35,7 +35,7 @@ class Profile extends StatelessWidget {
             color: Colors.blueAccent,
             child: Center(
               child: Text(
-                "helena Joshua",
+                "helena Joshua", // change the name using shared preference
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -97,6 +97,7 @@ class _RegisterChildState extends State<RegisterChild> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: TextFormField(
+                  // use datetime picker to get the date
                   controller: _dobController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -113,6 +114,7 @@ class _RegisterChildState extends State<RegisterChild> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: TextFormField(
+                  // have drop down menu
                   controller: _bloodGroupController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -161,7 +163,8 @@ class _RegisterChildState extends State<RegisterChild> {
               ),
               SizedBox(height: 32.0),
               ElevatedButton(
-                onPressed: () {},
+                onPressed:
+                    () {}, // create the tile and vaccine details   *(Pending)
                 child: Text('Register'),
               ),
             ],

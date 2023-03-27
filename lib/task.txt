@@ -1,0 +1,1 @@
+1) change the routing from MyHome Screen to Home Screen (pages)
