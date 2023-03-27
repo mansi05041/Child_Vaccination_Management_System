@@ -6,6 +6,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+  static const routeName = '\main';
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();

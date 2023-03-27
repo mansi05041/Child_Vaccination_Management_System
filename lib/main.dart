@@ -1,10 +1,13 @@
 import 'package:child_vaccination/helper/helperFunction.dart';
+import 'package:child_vaccination/screen/LoginPage.dart';
 import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:child_vaccination/screen/pages/Profile.dart';
+import 'package:child_vaccination/screen/splashScreen.dart';
 import 'package:child_vaccination/shared/Constant.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,22 +56,22 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // theme: ThemeData(
-      //   primaryColor: Color.fromARGB(255, 160, 195, 224),
-      //   scaffoldBackgroundColor: Colors.white,
-      // ),
-      // debugShowCheckedModeBanner: false,
-      // home: _isSignedIn ? const MyHomePage() : const LoginPage(),
-      // theme: ThemeData(
-      //   primaryColor: Color.fromARGB(255, 160, 195, 224),
-      //   scaffoldBackgroundColor: Colors.white,
-      // ),
-      // debugShowCheckedModeBanner: false,
-      // home: MyHomePage(),
-      initialRoute: '/',
+      theme: ThemeData(
+        primaryColor: Color.fromARGB(255, 160, 195, 224),
+        scaffoldBackgroundColor: Colors.white,
+      ),
       debugShowCheckedModeBanner: false,
+      home: AnimatedSplashScreen(
+        splash: Image.asset('assets/images/SplashImg.png'),
+        duration: 2000,
+        splashTransition: SplashTransition.fadeTransition,
+        splashIconSize: 1000,
+        backgroundColor: Colors.white,
+        nextScreen: _isSignedIn ? const MyHomePage() : const LoginPage(),
+      ),
       routes: {
-        '/': (context) => MyHomePage(),
+        SplashScreen.routeName: (context) => const SplashScreen(),
+        MyHomePage.routeName: (context) => const MyHomePage(),
         '/registerChild': (context) => RegisterChild(),
       },
     );
