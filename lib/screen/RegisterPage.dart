@@ -24,6 +24,8 @@ class _RegisterPageState extends State<RegisterPage> {
   String name = "";
   String email = "";
   String password = "";
+  String gender = "Male";
+  var genderOptions = ['Male', 'Female', 'Others'];
   bool _isLoading = false;
   bool passwordVisible = true;
   AuthenticationService authenticationService = AuthenticationService();
@@ -31,6 +33,9 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(
@@ -46,14 +51,17 @@ class _RegisterPageState extends State<RegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "IMMUNIFY",
-                        style: GoogleFonts.merriweather(
-                          textStyle: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * 0.1,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey,
+                      Center(
+                        child: Text(
+                          "Create new Account",
+                          style: GoogleFonts.merriweather(
+                            textStyle: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width * 0.1,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey,
+                            ),
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -70,12 +78,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Image
-                      const CircleAvatar(
-                        radius: 50,
-                        backgroundImage: AssetImage('assets/images/logo.png'),
                       ),
                       const SizedBox(height: 8),
                       // name
@@ -182,6 +184,30 @@ class _RegisterPageState extends State<RegisterPage> {
                           });
                         },
                       ),
+                      // Gender
+                      const SizedBox(height: 15),
+                      DropdownButtonFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Gender',
+                          prefixIcon: Icon(
+                            Icons.transgender_outlined,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        value: gender,
+                        icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                        items: genderOptions.map((String genderOptions) {
+                          return DropdownMenuItem(
+                            value: genderOptions,
+                            child: Text(genderOptions),
+                          );
+                        }).toList(),
+                        onChanged: ((String? newValue) {
+                          setState(() {
+                            gender = newValue!;
+                          });
+                        }),
+                      ),
                       // register
                       const SizedBox(height: 15),
                       SizedBox(
@@ -206,48 +232,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                       ),
-                      // Google register option
-                      const SizedBox(height: 13),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          onPressed: () {
-                            registerWithGoogle();
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/google.png',
-                                height: 24,
-                              ),
-                              SizedBox(width: 10),
-                              const Text(
-                                "Register with Google",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
                       // login into the account
                       const SizedBox(
                         height: 15,
                       ),
                       Text.rich(
                         TextSpan(
-                            text: "Already have an Account?",
+                            text: "Already have an Account? ",
                             style: const TextStyle(
                                 color: Colors.blueGrey, fontSize: 14),
                             children: <TextSpan>[
@@ -309,28 +300,5 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       });
     }
-  }
-
-  // register with google
-  registerWithGoogle() async {
-    setState(() {
-      _isLoading = true;
-    });
-    await authenticationService.RegisterWithGoogle().then((value) async {
-      if (value == true) {
-        // move to home page
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MyHomePage(),
-          ),
-        );
-      } else {
-        showSnackbar(context, Colors.redAccent, value);
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    });
   }
 }
