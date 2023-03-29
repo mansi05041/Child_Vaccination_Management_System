@@ -1,5 +1,6 @@
 import 'package:child_vaccination/helper/helperFunction.dart';
 import 'package:child_vaccination/services/databaseService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -7,6 +8,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 class AuthenticationService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   // login
   Future loginInUserWithEmailAndPassword(String email, String password) async {
@@ -22,72 +24,33 @@ class AuthenticationService {
     }
   }
 
-  // signin with googleSign in
-  Future SignInWithGoogle() async {
-    try {
-      if (kIsWeb) {
-        GoogleAuthProvider authProvider = GoogleAuthProvider();
-        final UserCredential userCredential =
-            await firebaseAuth.signInWithPopup(authProvider);
-        User? user = userCredential.user!;
-        if (user != null) {
-          return true;
-        }
-      } else {
-        final GoogleSignInAccount? googleSignInAccount =
-            await _googleSignIn.signIn();
-        final GoogleSignInAuthentication? googleSignInAuthentication =
-            await googleSignInAccount?.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication?.accessToken,
-          idToken: googleSignInAuthentication?.idToken,
-        );
-        User? user = (await firebaseAuth.signInWithCredential(credential)).user;
-        if (user != null) {
-          return true;
-        }
-      }
-    } catch (e) {
-      return 'Error in SignIn with Google. Try Again';
-    }
-  }
-
   // register with google
   Future RegisterWithGoogle() async {
     try {
-      if (kIsWeb) {
-        GoogleAuthProvider authProvider = GoogleAuthProvider();
-        final UserCredential userCredential =
-            await firebaseAuth.signInWithPopup(authProvider);
-        User? user = userCredential.user!;
-        // call our database service to update the user data
-        DataBaseService(uid: user.uid)
-            .updateUserData(user.displayName ?? "User", user.email!);
-
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      final GoogleSignInAuthentication? googleSignInAuthentication =
+          await googleSignInAccount?.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication?.accessToken,
+        idToken: googleSignInAuthentication?.idToken,
+      );
+      User? user = (await firebaseAuth.signInWithCredential(credential)).user;
+      if (user != null) {
+        // check if user already exists in database
+        final DocumentSnapshot userDoc =
+            await _firebaseFirestore.collection("users").doc(user.uid).get();
+        if (!userDoc.exists) {
+          // user does not exists, create new user
+          // call our database service to update the user data
+          DataBaseService(uid: user.uid)
+              .updateUserData(user.displayName ?? "User", user.email!);
+        }
+        // saving the shared prefernce state
         await HelperFunction.saveUserLoggedInStatus(true);
         await HelperFunction.saveUserEmailSF(user.email!);
         await HelperFunction.saveUserNameSF(user.displayName!);
         return true;
-      } else {
-        final GoogleSignInAccount? googleSignInAccount =
-            await _googleSignIn.signIn();
-        final GoogleSignInAuthentication? googleSignInAuthentication =
-            await googleSignInAccount?.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication?.accessToken,
-          idToken: googleSignInAuthentication?.idToken,
-        );
-        User? user = (await firebaseAuth.signInWithCredential(credential)).user;
-        if (user != null) {
-          // call our database service to update the user data
-          DataBaseService(uid: user.uid)
-              .updateUserData(user.displayName ?? "User", user.email!);
-          // saving the shared prefernce state
-          await HelperFunction.saveUserLoggedInStatus(true);
-          await HelperFunction.saveUserEmailSF(user.email!);
-          await HelperFunction.saveUserNameSF(user.displayName!);
-          return true;
-        }
       }
     } catch (e) {
       return 'Error in Registering with Google. Try Again';

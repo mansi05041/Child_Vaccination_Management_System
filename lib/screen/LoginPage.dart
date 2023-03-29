@@ -362,7 +362,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = true;
     });
-    await authenticationService.SignInWithGoogle().then((value) {
+    await authenticationService.RegisterWithGoogle().then((value) async {
       if (value == true) {
         // move to home page
         Navigator.push(
