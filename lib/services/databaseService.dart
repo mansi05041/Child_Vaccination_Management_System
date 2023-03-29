@@ -12,12 +12,13 @@ class DataBaseService {
       FirebaseFirestore.instance.collection("children");
 
   // updating the userdata
-  Future updateUserData(String name, String email) async {
+  Future updateUserData(String name, String email, String gender) async {
     return await userCollection.doc(uid).set({
       "fullName": name,
       "email": email,
       "children": [],
       "profilePic": "",
+      "gender": gender,
       "uid": uid,
     });
   }
