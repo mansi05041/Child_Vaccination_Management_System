@@ -1,1 +1,5 @@
 1) change the routing from MyHome Screen to Home Screen (pages)
+2) register page features add
+3) update database
+4) Login 
+5) google sgin in with connecting database

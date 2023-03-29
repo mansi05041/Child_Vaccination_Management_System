@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: AnimatedSplashScreen(
         splash: Image.asset('assets/images/SplashImg.png'),
-        duration: 2000,
+        duration: 1500,
         splashTransition: SplashTransition.fadeTransition,
         splashIconSize: 1000,
         backgroundColor: Colors.white,

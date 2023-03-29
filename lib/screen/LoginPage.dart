@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.black,
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: 5),
                         child: Container(
                           decoration: const BoxDecoration(
                             image: DecorationImage(
@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 13),
+                            const SizedBox(height: 3),
                             // login into App
                             SizedBox(
                               width: double.infinity,
@@ -206,17 +206,45 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: const <Widget>[
+                                Expanded(
+                                  child: Divider(
+                                    height: 2,
+                                    color: Colors.grey,
+                                    thickness: 1.2,
+                                  ),
+                                ),
+                                Text(
+                                  'OR',
+                                  style: TextStyle(
+                                    color: Colors.blueGrey,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Divider(
+                                    height: 2,
+                                    color: Colors.grey,
+                                    thickness: 1.2,
+                                  ),
+                                ),
+                              ],
+                            ),
                             // Google Sign In option
                             const SizedBox(height: 13),
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
+                                  backgroundColor: Colors.white38,
                                   elevation: 0,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
+                                    side: const BorderSide(
+                                      color: Colors.blueGrey,
+                                      width: 2,
+                                    ),
                                   ),
                                 ),
                                 onPressed: () {
@@ -231,9 +259,9 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     const SizedBox(width: 10),
                                     const Text(
-                                      "Sign In with Google",
+                                      "Connect with Google",
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.black,
                                         fontSize: 16,
                                       ),
                                     ),
@@ -241,7 +269,6 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                             ),
-
                             // Register the account
                             const SizedBox(
                               height: 15,
