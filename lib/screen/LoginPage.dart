@@ -3,8 +3,10 @@ import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:child_vaccination/screen/RegisterPage.dart';
 import 'package:child_vaccination/screen/ResetPassword.dart';
 import 'package:child_vaccination/services/authenticationService.dart';
+import 'package:child_vaccination/services/databaseService.dart';
 import 'package:child_vaccination/shared/validity.dart';
 import 'package:child_vaccination/widget/snackbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
@@ -275,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Don't have an account?",
+                                  text: "Don't have an account? ",
                                   style: const TextStyle(
                                       color: Colors.blueGrey, fontSize: 14),
                                   children: <TextSpan>[
@@ -318,6 +320,13 @@ class _LoginPageState extends State<LoginPage> {
           .loginInUserWithEmailAndPassword(email, password)
           .then((value) async {
         if (value == true) {
+          QuerySnapshot snapshot =
+              await DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+                  .gettingUserData(email);
+          // save the values to shared preference
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserEmailSF(email);
+          await HelperFunction.saveUserNameSF(snapshot.docs[0]['fullName']);
           // move to home page
           Navigator.push(
             context,
