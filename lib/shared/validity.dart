@@ -37,4 +37,12 @@ class Validator {
     }
     return null;
   }
+
+  // check the allergy
+  static String? validateAllergy({required String value}) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an allergy';
+    }
+    return null;
+  }
 }
