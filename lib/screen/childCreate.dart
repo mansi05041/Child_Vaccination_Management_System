@@ -1,14 +1,18 @@
 import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:child_vaccination/screen/pages/Profile.dart';
 import 'package:child_vaccination/services/authenticationService.dart';
+import 'package:child_vaccination/services/databaseService.dart';
 import 'package:child_vaccination/shared/validity.dart';
+import 'package:child_vaccination/widget/snackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class CreateNewChild extends StatefulWidget {
-  const CreateNewChild({super.key});
+  String parentName;
+  CreateNewChild({Key? key, required this.parentName}) : super(key: key);
 
   @override
   State<CreateNewChild> createState() => _CreateNewChildState();
@@ -19,7 +23,7 @@ class _CreateNewChildState extends State<CreateNewChild> {
   final _nameTextController = TextEditingController();
   final _allergyController = TextEditingController();
   late DateTime _selectedDate;
-  String name = "";
+  String Cname = "";
   String gender = "Male";
   var genderOptions = ['Male', 'Female', 'Others'];
   String bloodGroup = "A+";
@@ -135,7 +139,7 @@ class _CreateNewChildState extends State<CreateNewChild> {
                               ),
                               onChanged: (val) {
                                 setState(() {
-                                  name = val;
+                                  Cname = val;
                                 });
                               },
                             ),
@@ -292,7 +296,9 @@ class _CreateNewChildState extends State<CreateNewChild> {
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  registerChild();
+                                },
                                 child: const Text(
                                   "Register Your Child",
                                   style: TextStyle(
@@ -313,6 +319,7 @@ class _CreateNewChildState extends State<CreateNewChild> {
     );
   }
 
+  // To add the new allergies
   List<Widget> _buildAllergyCheckboxes() {
     return [
       for (final allergy in _selectedAllergies)
@@ -335,5 +342,27 @@ class _CreateNewChildState extends State<CreateNewChild> {
           },
         ),
     ];
+  }
+
+  // Function to register the child
+  registerChild() async {
+    if (Cname != "") {
+      setState(() {
+        _isLoading = true;
+      });
+      // Call the Database to save the data
+      DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+          .CreateChildData(widget.parentName, Cname, gender, bloodGroup,
+              _selectedDate, _selectedAllergies)
+          .whenComplete(() {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+
+      // show the snackbar of confirmation
+      Navigator.of(context).pop();
+      showSnackbar(context, Colors.green, "Child has been Registered!");
+    }
   }
 }

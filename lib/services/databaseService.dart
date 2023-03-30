@@ -29,4 +29,19 @@ class DataBaseService {
         await userCollection.where("email", isEqualTo: email).get();
     return snapshot;
   }
+
+  // creating the childData
+  Future CreateChildData(String parentName, String childName, String gender,
+      String bloodGrp, DateTime date, List<String> Allergies) async {
+    DocumentReference childDocumentReference = await childCollection.add({
+      "childName": childName,
+      "parentName": parentName,
+      "vaccines": [],
+      "ChildId": "",
+      "Gender": gender,
+      "DateOfBirth": date,
+      "Allergies": Allergies,
+      "BloodGroup": bloodGrp,
+    });
+  }
 }

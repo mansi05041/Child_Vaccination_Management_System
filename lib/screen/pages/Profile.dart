@@ -11,7 +11,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String name = "";
+  String Pname = "";
   bool _isLoading = false;
   AuthenticationService authenticationService = AuthenticationService();
 
@@ -34,11 +34,11 @@ class _ProfileState extends State<Profile> {
       if (userName == null) {
         // user not found
         setState(() {
-          name = "Unknown";
+          Pname = "Unknown";
         });
       } else {
         setState(() {
-          name = userName;
+          Pname = userName;
         });
       }
     } catch (e) {
@@ -85,7 +85,7 @@ class _ProfileState extends State<Profile> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '$name',
+                      '$Pname',
                       style: TextStyle(
                         fontSize: MediaQuery.of(context).size.width * 0.05,
                         fontWeight: FontWeight.bold,
@@ -103,7 +103,11 @@ class _ProfileState extends State<Profile> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const CreateNewChild()),
+            MaterialPageRoute(
+              builder: (context) => CreateNewChild(
+                parentName: Pname,
+              ),
+            ),
           ).then((value) {
             if (value != null && value is String) {
               // handle the result if needed
