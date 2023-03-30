@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         SplashScreen.routeName: (context) => const SplashScreen(),
         MyHomePage.routeName: (context) => const MyHomePage(),
-        '/registerChild': (context) => RegisterChild(),
+        //'/registerChild': (context) => RegisterChild(),
       },
     );
   }

@@ -1,175 +1,117 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:child_vaccination/helper/helperFunction.dart';
+import 'package:child_vaccination/screen/childCreate.dart';
+import 'package:child_vaccination/services/authenticationService.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/dropdown.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromARGB(255, 160, 195, 224),
-      appBar: AppBar(
-        toolbarHeight: 20,
-        title: Text("Profile"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: Column(children: [
-          Container(
-            height: 200,
-            color: Colors.blueAccent,
-            child: Center(
-              child: Text(
-                "helena Joshua", // change the name using shared preference
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Container(
-            height: 100,
-            color: Colors.blueAccent,
-            child: Center(
-              child: Text(
-                "helena Joshua", // change the name using shared preference
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          )
-        ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/registerChild');
-        },
-        child: Icon(Icons.add),
-      ),
-    );
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  String name = "";
+  bool _isLoading = false;
+  AuthenticationService authenticationService = AuthenticationService();
+
+  @override
+  @override
+  void initState() {
+    super.initState();
+    gettingUserData();
   }
-}
 
-class RegisterChild extends StatefulWidget {
-  @override
-  State<RegisterChild> createState() => _RegisterChildState();
-}
+  // function to get the user data
+  Future<void> gettingUserData() async {
+    setState(() {
+      _isLoading = true;
+    });
 
-class _RegisterChildState extends State<RegisterChild> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _dobController = TextEditingController();
-  TextEditingController _bloodGroupController = TextEditingController();
-  String gender = "";
+    try {
+      // fetch the username from shared preferences
+      String? userName = await HelperFunction.getUserName();
+      if (userName == null) {
+        // user not found
+        setState(() {
+          name = "Unknown";
+        });
+      } else {
+        setState(() {
+          name = userName;
+        });
+      }
+    } catch (e) {
+      throw (e);
+    } finally {
+      // hide loading indicator
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 160, 195, 224),
       appBar: AppBar(
-        title: Text('Registration Form'),
+        backgroundColor: Theme.of(context).primaryColor,
+        toolbarHeight: 100,
       ),
+      drawer: Drawer(),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              // image
+              const CircleAvatar(
+                radius: 60,
+                backgroundImage: AssetImage('assets/images/profile.png'),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              // name
               Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 56, 93, 124),
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Theme.of(context).primaryColor,
                 ),
-                child: TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Name',
-                    contentPadding: EdgeInsets.all(16.0),
-                    hintStyle: TextStyle(color: Colors.white),
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$name',
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(height: 16.0),
-              Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 25, 76, 117),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: TextFormField(
-                  // use datetime picker to get the date
-                  controller: _dobController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Date of Birth',
-                    contentPadding: EdgeInsets.all(16.0),
-                    hintStyle: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 25, 76, 117),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: TextFormField(
-                  // have drop down menu
-                  controller: _bloodGroupController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Blood Group',
-                    contentPadding: EdgeInsets.all(16.0),
-                    hintStyle: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              //
-              Text('Gender'),
-              Row(
-                children: [
-                  Radio(
-                    value: 'Male',
-                    groupValue: gender,
-                    onChanged: (value) {
-                      setState(() {
-                        gender = value.toString();
-                      });
-                    },
-                  ),
-                  Text('Male'),
-                  Radio(
-                    value: 'Female',
-                    groupValue: gender,
-                    onChanged: (value) {
-                      setState(() {
-                        gender = value.toString();
-                      });
-                    },
-                  ),
-                  Text('Female'),
-                  Radio(
-                    value: 'Other',
-                    groupValue: gender,
-                    onChanged: (value) {
-                      setState(() {
-                        gender = value.toString();
-                      });
-                    },
-                  ),
-                  Text('Other'),
-                ],
-              ),
-              SizedBox(height: 32.0),
-              ElevatedButton(
-                onPressed:
-                    () {}, // create the tile and vaccine details   *(Pending)
-                child: Text('Register'),
               ),
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CreateNewChild()),
+          ).then((value) {
+            if (value != null && value is String) {
+              // handle the result if needed
+            }
+          });
+        },
+        backgroundColor: Colors.black,
+        child: Icon(Icons.add),
       ),
     );
   }
