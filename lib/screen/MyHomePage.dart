@@ -1,8 +1,9 @@
 import 'package:child_vaccination/screen/pages/Home.dart';
 import 'package:child_vaccination/screen/pages/Profile.dart';
-import 'package:child_vaccination/screen/pages/SettingScreen.dart';
+import 'package:child_vaccination/screen/pages/child.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:child_vaccination/screen/pages/chat.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -23,7 +24,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     Home(),
     Profile(),
-    SettingScreen(),
+    ChildPage(),
+    ChatScreen(),
   ];
 
   @override
@@ -52,8 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 text: 'Profile',
               ),
               GButton(
-                icon: Icons.settings,
-                text: 'Settings',
+                icon: Icons.child_care_rounded,
+                text: 'Child',
+              ),
+              GButton(
+                icon: Icons.chat_bubble_rounded,
+                text: 'Chat',
               ),
             ],
           ),
