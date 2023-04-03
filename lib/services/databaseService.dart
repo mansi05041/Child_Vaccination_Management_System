@@ -43,5 +43,21 @@ class DataBaseService {
       "Allergies": Allergies,
       "BloodGroup": bloodGrp,
     });
+
+    // update the children
+    await childDocumentReference.update({
+      "childId": childDocumentReference.id,
+    });
+
+    DocumentReference userDocumentReference = userCollection.doc(uid);
+    return await userDocumentReference.update({
+      "children":
+          FieldValue.arrayUnion(["${childDocumentReference.id}_$childName"])
+    });
+  }
+
+  // getting childrenList
+  getChildren() async {
+    return userCollection.doc(uid).snapshots();
   }
 }
