@@ -51,8 +51,10 @@ class _VaccinePageState extends State<VaccinePage> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: _isLoading
-          ? CircularProgressIndicator(
-              backgroundColor: Theme.of(context).primaryColor,
+          ? Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
             )
           : vaccineList(),
     );
@@ -62,21 +64,34 @@ class _VaccinePageState extends State<VaccinePage> {
   Widget vaccineList() {
     List<Map<String, dynamic>> vaccines =
         List.castFrom(childSnapshot.docs[0]['Vaccine']);
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: DetailsTile(childSnapshot: childSnapshot),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Center(
+              child: DetailsTile(childSnapshot: childSnapshot),
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: Text(
+                'VACCINES',
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.05,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
         ),
-        const SizedBox(height: 16),
-        Text(
-          'Vaccines:',
-          style: Theme.of(context).textTheme.displaySmall,
-        ),
-        const SizedBox(height: 8),
         ListView.builder(
           shrinkWrap: true,
-          scrollDirection: Axis.vertical,
+          physics: NeverScrollableScrollPhysics(),
           itemCount: vaccines.length,
           itemBuilder: (context, index) {
             var vaccineData = vaccines[index];
@@ -89,7 +104,7 @@ class _VaccinePageState extends State<VaccinePage> {
           },
         ),
       ],
-    );
+    ));
   }
 }
 
@@ -168,7 +183,7 @@ class DetailsTile extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Allergies: ${allergies.join(",")}',
+                'Allergies: ${allergies.join(", ")}',
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white,
