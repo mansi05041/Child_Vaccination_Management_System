@@ -39,7 +39,7 @@ class _ChildTileState extends State<ChildTile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const VaccinePage(),
+                    builder: (context) => VaccinePage(childId: widget.childId),
                   ),
                 );
               },
