@@ -1,3 +1,4 @@
+import 'package:child_vaccination/services/databaseService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,7 @@ class VaccineTile extends StatefulWidget {
 
 class _VaccineTileState extends State<VaccineTile> {
   bool _istaken = false;
+  DataBaseService dataBaseService = DataBaseService();
   @override
   void initState() {
     // TODO: implement initState
@@ -61,7 +63,8 @@ class _VaccineTileState extends State<VaccineTile> {
                         return const SizedBox();
                       }
                       return RadioListTile(
-                        title: Text('$vaccineName-$vaccineAge'),
+                        title: Text('$vaccineName'),
+                        subtitle: Text('$vaccineAge'),
                         value: true,
                         groupValue: _istaken,
                         onChanged: (bool? value) async {
@@ -70,13 +73,9 @@ class _VaccineTileState extends State<VaccineTile> {
                               _istaken = value;
                             });
 
-                            // update the Firestore
-                            final vaccineRef = FirebaseFirestore.instance
-                                .collection('children')
-                                .doc(widget.childId)
-                                .collection('vaccine')
-                                .doc('$vaccineName-$vaccineAge');
-                            await vaccineRef.update({'isTaken': value});
+                            // update the firestore
+                            dataBaseService.updateVaccineisTaken(
+                                widget.childId, vaccineName, _istaken);
                           }
                         },
                         secondary: Checkbox(
@@ -88,13 +87,8 @@ class _VaccineTileState extends State<VaccineTile> {
                               });
 
                               // update the firestore
-                              final vaccineRef = FirebaseFirestore.instance
-                                  .collection('children')
-                                  .doc(widget.childId)
-                                  .collection('Vaccine')
-                                  .doc('$vaccineName-$vaccineAge');
-
-                              await vaccineRef.update({'isTaken': value});
+                              dataBaseService.updateVaccineisTaken(
+                                  widget.childId, vaccineName, _istaken);
                             }
                           },
                         ),
