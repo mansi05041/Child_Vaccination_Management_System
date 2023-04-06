@@ -73,4 +73,24 @@ class DataBaseService {
         await childCollection.where("ChildId", isEqualTo: childId).get();
     return snapshot;
   }
+
+  // update isTaken of vaccine
+  Future<void> updateVaccineisTaken(
+      String childId, String vaccineName, bool isTaken) async {
+    // Get the document that contains the child's data
+    final chilDocument = await childCollection.doc(childId).get();
+    // Get the current value of the Vaccine array
+    final vaccines =
+        List<Map<String, dynamic>>.from(chilDocument.get('Vaccine'));
+    // Find the vaccine with the specified name and update its isTaken
+    final vaccineIndex =
+        vaccines.indexWhere((vaccine) => vaccine['vaccineName'] == vaccineName);
+    if (vaccineIndex != -1) {
+      final updatedVaccine = Map<String, dynamic>.from(vaccines[vaccineIndex])
+        ..['isTaken'] = isTaken;
+      vaccines[vaccineIndex] = updatedVaccine;
+    }
+    // update the vaccine array with the updated values
+    await childCollection.doc(childId).update({'Vaccine': vaccines});
+  }
 }
