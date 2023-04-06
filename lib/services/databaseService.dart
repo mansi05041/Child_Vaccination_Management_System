@@ -31,12 +31,18 @@ class DataBaseService {
   }
 
   // creating the childData
-  Future CreateChildData(String parentName, String childName, String gender,
-      String bloodGrp, DateTime date, List<String> Allergies) async {
+  Future CreateChildData(
+      String parentName,
+      String childName,
+      String gender,
+      String bloodGrp,
+      DateTime date,
+      List<String> Allergies,
+      List<Map<String, dynamic>> vaccines) async {
     DocumentReference childDocumentReference = await childCollection.add({
       "childName": childName,
       "parentName": parentName,
-      "vaccines": [],
+      "Vaccine": vaccines,
       "ChildId": "",
       "Gender": gender,
       "DateOfBirth": date,
@@ -46,7 +52,7 @@ class DataBaseService {
 
     // update the children
     await childDocumentReference.update({
-      "childId": childDocumentReference.id,
+      "ChildId": childDocumentReference.id,
     });
 
     DocumentReference userDocumentReference = userCollection.doc(uid);
@@ -59,5 +65,12 @@ class DataBaseService {
   // getting childrenList
   getChildren() async {
     return userCollection.doc(uid).snapshots();
+  }
+
+  // getting childDetails
+  Future<QuerySnapshot> getChildDetail(String childId) async {
+    QuerySnapshot snapshot =
+        await childCollection.where("ChildId", isEqualTo: childId).get();
+    return snapshot;
   }
 }
