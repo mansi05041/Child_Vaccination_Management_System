@@ -344,6 +344,90 @@ class _CreateNewChildState extends State<CreateNewChild> {
     ];
   }
 
+  // vaccines details
+  List<Map<String, dynamic>> vaccines = [
+    {"vaccineName": "BCG", "age": "At birth", "isTaken": false},
+    {"vaccineName": "Oral Polio Vaccine", "age": "At birth", "isTaken": false},
+    {"vaccineName": "Hepatitis B", "age": "At birth", "isTaken": false},
+    {"vaccineName": "DPT", "age": "6 weeks", "isTaken": false},
+    {"vaccineName": "Hib", "age": "6 weeks", "isTaken": false},
+    {"vaccineName": "Rotavirus", "age": "6 weeks", "isTaken": false},
+    {"vaccineName": "IPV", "age": "6 weeks", "isTaken": false},
+    {"vaccineName": "Hepatitis B 2nd Dose", "age": "6 weeks", "isTaken": false},
+    {"vaccineName": "DPT 2nd Dose", "age": "10 weeks", "isTaken": false},
+    {"vaccineName": "Hib 2nd Dose", "age": "10 weeks", "isTaken": false},
+    {"vaccineName": "Rotavirus 2nd dose", "age": "10 weeks", "isTaken": false},
+    {"vaccineName": "IPV 2nd dose", "age": "10 weeks", "isTaken": false},
+    {
+      "vaccineName": "Hepatitis B 3rd Dose",
+      "age": "10 weeks",
+      "isTaken": false
+    },
+    {"vaccineName": "DPT 3rd Dose", "age": "14 weeks", "isTaken": false},
+    {"vaccineName": "Hib 3rd Dose", "age": "14 weeks", "isTaken": false},
+    {"vaccineName": "Rotavirus 3rd Dose", "age": "14 weeks", "isTaken": false},
+    {"vaccineName": "IPV 3rd Dose", "age": "14 weeks", "isTaken": false},
+    {
+      "vaccineName": "Hepatitis B 4th Dose",
+      "age": "14 weeks",
+      "isTaken": false
+    },
+    {
+      "vaccineName": "Oral Polio Vaccine 2nd Dose",
+      "age": "6 months",
+      "isTaken": false
+    },
+    {"vaccineName": "Influenza", "age": "6 months", "isTaken": false},
+    {"vaccineName": "Influenza 2nd Dose", "age": "6 months", "isTaken": false},
+    {"vaccineName": "Measles", "age": "9 months", "isTaken": false},
+    {"vaccineName": "MMR vaccine", "age": "9 months", "isTaken": false},
+    {"vaccineName": "Typhoid CV", "age": "9 months", "isTaken": false},
+    {"vaccineName": "Hepatitis A", "age": "12 months", "isTaken": false},
+    {"vaccineName": "PCV Booster", "age": "15 months", "isTaken": false},
+    {
+      "vaccineName": "MMR vaccine 2nd Dose",
+      "age": "15 months",
+      "isTaken": false
+    },
+    {"vaccineName": "Varicella", "age": "15 months", "isTaken": false},
+    {"vaccineName": "IPV Booster", "age": "16 months", "isTaken": false},
+    {"vaccineName": "Hib type B Booster", "age": "16 months", "isTaken": false},
+    {"vaccineName": "DPT Booster", "age": "16 months", "isTaken": false},
+    {"vaccineName": "Hepatitis A", "age": "18 months", "isTaken": false},
+    {"vaccineName": "Varicella 2nd Dose", "age": "18 months", "isTaken": false},
+    {"vaccineName": "Typhoid Booster", "age": "2 Years", "isTaken": false},
+    {
+      "vaccineName": "Annual Influenza Vaccine",
+      "age": "2 years",
+      "isTaken": false
+    },
+    {
+      "vaccineName": "Annual Influenza Vaccine",
+      "age": "3 years",
+      "isTaken": false
+    },
+    {
+      "vaccineName": "Annual Influenza Vaccine",
+      "age": "4 years",
+      "isTaken": false
+    },
+    {
+      "vaccineName": "Annual Influenza Vaccine",
+      "age": "5 years",
+      "isTaken": false
+    },
+    {
+      "vaccineName": "Oral Polio Vaccine 3rd Dose",
+      "age": "4 years",
+      "isTaken": false
+    },
+    {"vaccineName": "Typhoid Booster", "age": "4 years", "isTaken": false},
+    {"vaccineName": "DTP Booster", "age": "4 years", "isTaken": false},
+    {"vaccineName": "IPV Booster", "age": "4 years", "isTaken": false},
+    {"vaccineName": "MMR 3rd Dose", "age": "4 years", "isTaken": false},
+    {"vaccineName": "Tdap", "age": "10 years", "isTaken": false},
+  ];
+
   // Function to register the child
   registerChild() async {
     if (Cname != "") {
@@ -353,7 +437,7 @@ class _CreateNewChildState extends State<CreateNewChild> {
       // Call the Database to save the data
       DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
           .CreateChildData(widget.parentName, Cname, gender, bloodGroup,
-              _selectedDate, _selectedAllergies)
+              _selectedDate, _selectedAllergies, vaccines)
           .whenComplete(() {
         setState(() {
           _isLoading = false;
