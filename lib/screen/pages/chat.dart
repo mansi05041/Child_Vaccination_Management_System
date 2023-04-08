@@ -16,6 +16,7 @@ class ChatScreen extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.blueGrey, secondary: Colors.white),
       ),
+      debugShowCheckedModeBanner: false,
       home: ChatPage(chatApi: chatApi),
     );
   }
