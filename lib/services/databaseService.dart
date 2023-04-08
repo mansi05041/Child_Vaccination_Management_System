@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class DataBaseService {
@@ -92,5 +93,16 @@ class DataBaseService {
     }
     // update the vaccine array with the updated values
     await childCollection.doc(childId).update({'Vaccine': vaccines});
+  }
+
+  // update the email in the firebase
+  Future<void> updateEmail(String newEmail) async {
+    try {
+      await userCollection.doc(uid).update({
+        "email": newEmail,
+      });
+    } catch (e) {
+      throw (e);
+    }
   }
 }

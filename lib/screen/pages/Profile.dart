@@ -250,7 +250,7 @@ class _ProfileState extends State<Profile> {
                       Text(
                         "$email",
                         style: const TextStyle(
-                            fontSize: 17,
+                            fontSize: 14,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),

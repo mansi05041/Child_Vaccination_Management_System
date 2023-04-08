@@ -34,7 +34,7 @@ class _SettingPageState extends State<SettingPage> {
               );
             },
           )),
-      endDrawer: Drawer(
+      body: Container(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -42,11 +42,15 @@ class _SettingPageState extends State<SettingPage> {
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
               ),
-              child: const Text(
-                'Update',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+              child: const Center(
+                child: Text(
+                  'UPDATE',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
