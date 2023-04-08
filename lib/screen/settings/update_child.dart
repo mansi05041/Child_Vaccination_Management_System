@@ -1,39 +1,39 @@
-import 'package:child_vaccination/screen/MyHomePage.dart';
-import 'package:child_vaccination/screen/settings/update_child.dart';
+import 'package:child_vaccination/screen/setting.dart';
 import 'package:child_vaccination/screen/settings/update_profile.dart';
 import 'package:child_vaccination/screen/settings/update_vaccine.dart';
 import 'package:flutter/material.dart';
 
-class SettingPage extends StatefulWidget {
-  const SettingPage({Key? key}) : super(key: key);
+class UpdateChild extends StatefulWidget {
+  const UpdateChild({super.key});
 
   @override
-  _SettingPageState createState() => _SettingPageState();
+  State<UpdateChild> createState() => _UpdateChildState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _UpdateChildState extends State<UpdateChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          title: const Text(
-            'Settings',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+        backgroundColor: Theme.of(context).primaryColor,
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'Update Child Profile',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
-          toolbarHeight: 80,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(Icons.people_alt),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const MyHomePage()),
-              );
-            },
-          )),
+        ),
+        toolbarHeight: 80,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SettingPage()),
+            );
+          },
+        ),
+      ),
       endDrawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
