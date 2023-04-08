@@ -19,7 +19,7 @@ class UpdateProfile extends StatefulWidget {
 class _UpdateProfileState extends State<UpdateProfile> {
   String name = "";
   String email = "";
-  String gender = "Unknown";
+  String gender = "";
   var genderOptions = ['Unknown', 'Male', 'Female', 'Others'];
   bool isGoogleAuthProvider = false;
   bool _isloading = false;
