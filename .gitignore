@@ -43,3 +43,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 node_modules
+
+# OpenAI key
+/lib/screen/chatbot/key.dart
+
+# Firebase Constants for web
+/lib/shared/Constant.dart
