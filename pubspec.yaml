@@ -47,6 +47,9 @@ dependencies:
   http: ^0.13.5
   flutter_datetime_picker: ^1.5.1
   datetime_picker_formfield: ^2.0.1
+  dart_openai: ^1.9.1
+  progress_indicators: ^1.0.0
+  sticky_headers: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:
