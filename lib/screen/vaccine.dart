@@ -3,6 +3,7 @@ import 'package:child_vaccination/widget/vaccineTile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
 class VaccinePage extends StatefulWidget {
   final String childId;
@@ -68,41 +69,56 @@ class _VaccinePageState extends State<VaccinePage> {
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Center(
-              child: DetailsTile(childSnapshot: childSnapshot),
-            ),
-            const SizedBox(height: 16),
-            Center(
-              child: Text(
-                'VACCINES',
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.05,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
-                ),
-                textAlign: TextAlign.center,
+        StickyHeader(
+          header: Container(
+            color: Colors.white,
+            child: SizedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Center(
+                    child: DetailsTile(childSnapshot: childSnapshot),
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Text(
+                      'VACCINES',
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                ],
               ),
             ),
-            const SizedBox(height: 8),
-          ],
-        ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: vaccines.length,
-          itemBuilder: (context, index) {
-            var vaccineData = vaccines[index];
-            return VaccineTile(
-              age: vaccineData['age'],
-              vaccineName: vaccineData['vaccineName'],
-              isTaken: vaccineData['isTaken'],
-              childId: widget.childId,
-            );
-          },
-        ),
+          ),
+          content: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: vaccines.length,
+                    itemBuilder: (context, index) {
+                      var vaccineData = vaccines[index];
+                      return VaccineTile(
+                        age: vaccineData['age'],
+                        vaccineName: vaccineData['vaccineName'],
+                        isTaken: vaccineData['isTaken'],
+                        childId: widget.childId,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
       ],
     ));
   }
