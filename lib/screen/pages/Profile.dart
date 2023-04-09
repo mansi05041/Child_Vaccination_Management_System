@@ -3,6 +3,8 @@ import 'package:child_vaccination/screen/LoginPage.dart';
 import 'package:child_vaccination/screen/ResetPassword.dart';
 import 'package:child_vaccination/screen/setting.dart';
 import 'package:child_vaccination/services/authenticationService.dart';
+import 'package:child_vaccination/services/databaseService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -15,9 +17,12 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String name = "";
   String email = "";
+  String photoUrl = "";
   bool _isLoading = false;
   bool _isVerified = false;
+  bool _isUserHasPhoto = false;
   AuthenticationService authenticationService = AuthenticationService();
+  DataBaseService dataBaseService = DataBaseService();
 
   @override
   void initState() {
@@ -38,12 +43,22 @@ class _ProfileState extends State<Profile> {
           email = value!;
         });
       });
+
       // fetch the name from shared prefernce
       await HelperFunction.getUserName().then((value) {
         setState(() {
           name = value!;
         });
       });
+
+      // fetch the user photourl
+      QuerySnapshot snapshot = await dataBaseService.gettingUserData(email);
+      if (snapshot.docs.isNotEmpty) {
+        setState(() {
+          photoUrl = snapshot.docs.first.get('profilePic');
+          _isUserHasPhoto = true;
+        });
+      }
     } catch (e) {
       setState(() {
         name = "Unknown";
@@ -201,10 +216,15 @@ class _ProfileState extends State<Profile> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage('assets/images/profile.png'),
-            ),
+            _isUserHasPhoto
+                ? CircleAvatar(
+                    radius: 100,
+                    backgroundImage: NetworkImage(photoUrl),
+                  )
+                : const CircleAvatar(
+                    radius: 100,
+                    backgroundImage: AssetImage('assets/images/profile.png'),
+                  ),
             const SizedBox(
               height: 30,
             ),
