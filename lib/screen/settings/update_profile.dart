@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:child_vaccination/helper/helperFunction.dart';
-import 'package:child_vaccination/screen/setting.dart';
+import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:child_vaccination/screen/settings/update_child.dart';
 import 'package:child_vaccination/screen/settings/update_vaccine.dart';
 import 'package:child_vaccination/services/authenticationService.dart';
@@ -8,6 +10,8 @@ import 'package:child_vaccination/shared/validity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({super.key});
@@ -20,14 +24,195 @@ class _UpdateProfileState extends State<UpdateProfile> {
   String name = "";
   String email = "";
   String gender = "";
+  String photoUrl = "";
   var genderOptions = ['Unknown', 'Male', 'Female', 'Others'];
   bool isGoogleAuthProvider = false;
   bool _isloading = false;
+  bool _isUserHasPhoto = false;
   AuthenticationService authenticationService = AuthenticationService();
   DataBaseService dataBaseService = DataBaseService();
   final formkey = GlobalKey<FormState>();
   final _nameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
+
+  // function to show the bottom sheet dialog for uploading or removing picture
+  Future<void> _showPhotoUploadOption() async {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(
+                  Icons.photo_camera,
+                  color: Theme.of(context).primaryColor,
+                ),
+                title: const Text(
+                  'upload Photo using Camera',
+                  style: TextStyle(
+                    color: Colors.blueGrey,
+                  ),
+                ),
+                onTap: () async {
+                  Navigator.pop(context);
+                  setState(() {
+                    _isloading = true;
+                  });
+                  // Check if the user already has a profile photo
+                  if (_isUserHasPhoto) {
+                    try {
+                      Uri uri = Uri.parse(photoUrl);
+                      String path = uri.path;
+                      String fileName = path.split('/').last;
+                      Reference ref = FirebaseStorage.instance
+                          .ref()
+                          .child('images/$fileName');
+                      try {
+                        await ref.delete();
+                        setState(() {
+                          _isUserHasPhoto = false;
+                          photoUrl = "";
+                        });
+                      } catch (e) {
+                        print(e);
+                      }
+                    } catch (e) {
+                      print(e);
+                    }
+                  }
+                  // pick the image
+                  ImagePicker imagePicker = ImagePicker();
+                  XFile? file =
+                      await imagePicker.pickImage(source: ImageSource.camera);
+                  if (file != null) {
+                    String uniqueFileName =
+                        DateTime.now().microsecondsSinceEpoch.toString();
+                    // store into Firebase Storage
+                    Reference referenceRoot = FirebaseStorage.instance.ref();
+                    Reference imageRef = referenceRoot.child('images');
+                    Reference referenceImageToUpload =
+                        imageRef.child(uniqueFileName);
+                    try {
+                      // upload the image into Firebase Storage
+                      await referenceImageToUpload.putFile(File(file.path));
+                      await referenceImageToUpload
+                          .getDownloadURL()
+                          .then((value) {
+                        setState(() {
+                          photoUrl = value;
+                        });
+                      });
+                      final userPhotoSnapShot =
+                          await dataBaseService.gettingUserData(email);
+                      if (userPhotoSnapShot.docs.isNotEmpty) {
+                        final userDocument = userPhotoSnapShot.docs.first;
+                        await userDocument.reference
+                            .update({"profilePic": photoUrl});
+                      }
+                      setState(() {
+                        _isUserHasPhoto = true;
+                        _isloading = false;
+                      });
+                    } catch (e) {
+                      throw (e);
+                    }
+                  }
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.photo_album,
+                  color: Theme.of(context).primaryColor,
+                ),
+                title: const Text(
+                  'upload Photo from gallery',
+                  style: TextStyle(
+                    color: Colors.blueGrey,
+                  ),
+                ),
+                onTap: () async {
+                  Navigator.pop(context);
+                  setState(() {
+                    _isloading = true;
+                  });
+                  // Check if the user already has a profile photo
+                  if (_isUserHasPhoto) {
+                    try {
+                      Uri uri = Uri.parse(photoUrl);
+                      String path = uri.path;
+                      String fileName = path.split('/').last;
+                      Reference ref = FirebaseStorage.instance
+                          .ref()
+                          .child('images/$fileName');
+                      try {
+                        await ref.delete();
+                        setState(() {
+                          _isUserHasPhoto = false;
+                          photoUrl = "";
+                        });
+                      } catch (e) {
+                        print(e);
+                      }
+                    } catch (e) {
+                      print(e);
+                    }
+                  }
+                  // pick the image
+                  ImagePicker imagePicker = ImagePicker();
+                  XFile? file =
+                      await imagePicker.pickImage(source: ImageSource.gallery);
+                  if (file != null) {
+                    String uniqueFileName =
+                        DateTime.now().microsecondsSinceEpoch.toString();
+                    // store into Firebase Storage
+                    Reference referenceRoot = FirebaseStorage.instance.ref();
+                    Reference imageRef = referenceRoot.child('images');
+                    Reference referenceImageToUpload =
+                        imageRef.child(uniqueFileName);
+                    try {
+                      // upload the image into Firebase Storage
+                      await referenceImageToUpload.putFile(File(file.path));
+                      await referenceImageToUpload
+                          .getDownloadURL()
+                          .then((value) {
+                        setState(() {
+                          photoUrl = value;
+                        });
+                      });
+                      final userPhotoSnapShot =
+                          await dataBaseService.gettingUserData(email);
+                      if (userPhotoSnapShot.docs.isNotEmpty) {
+                        final userDocument = userPhotoSnapShot.docs.first;
+                        await userDocument.reference
+                            .update({"profilePic": photoUrl});
+                      }
+                      setState(() {
+                        _isUserHasPhoto = true;
+                        _isloading = false;
+                      });
+                    } catch (e) {
+                      throw (e);
+                    }
+                  }
+                },
+              ),
+              ListTile(
+                  leading: Icon(
+                    Icons.delete,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: const Text(
+                    'Remove Photo',
+                    style: TextStyle(
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                  onTap: () {}),
+            ],
+          );
+        });
+  }
 
   @override
   void initState() {
@@ -73,9 +258,18 @@ class _UpdateProfileState extends State<UpdateProfile> {
           setState(() {
             isGoogleAuthProvider = true;
           });
-          print(isGoogleAuthProvider);
         }
       });
+
+      // fetch the google photo url from database
+      QuerySnapshot Photosnapshot =
+          await dataBaseService.gettingUserData(email);
+      if (Photosnapshot.docs.isNotEmpty) {
+        setState(() {
+          photoUrl = Photosnapshot.docs.first.get('profilePic');
+          _isUserHasPhoto = true;
+        });
+      }
     } catch (e) {
       setState(() {
         name = "Unknown";
@@ -105,10 +299,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
         toolbarHeight: 80,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.settings),
+          icon: const Icon(Icons.people_alt),
           onPressed: () {
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const SettingPage()),
+              MaterialPageRoute(builder: (context) => const MyHomePage()),
             );
           },
         ),
@@ -213,18 +407,24 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     children: [
                       Stack(
                         children: [
-                          const CircleAvatar(
-                            radius: 30,
-                            backgroundImage:
-                                AssetImage('assets/images/profile.png'),
-                          ),
+                          _isUserHasPhoto
+                              ? CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: NetworkImage(photoUrl),
+                                )
+                              : const CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage:
+                                      AssetImage('assets/images/profile.png'),
+                                ),
                           Positioned(
                             bottom: -15,
                             right: -13,
                             child: IconButton(
-                              icon: Icon(Icons.camera_alt),
+                              icon: const Icon(Icons.camera_alt),
                               onPressed: () {
-                                // Handle edit icon button press
+                                // Handle camera icon button press
+                                _showPhotoUploadOption();
                               },
                             ),
                           ),
@@ -259,7 +459,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                           color: Colors.grey,
                                           decoration: TextDecoration.underline),
                                       recognizer: TapGestureRecognizer()
-                                        ..onTap = () {})
+                                        ..onTap = () {
+                                          _showPhotoUploadOption();
+                                        })
                                 ]),
                           ),
                         ],

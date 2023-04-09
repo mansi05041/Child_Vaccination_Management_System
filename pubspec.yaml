@@ -50,6 +50,8 @@ dependencies:
   dart_openai: ^1.9.1
   progress_indicators: ^1.0.0
   sticky_headers: ^0.3.0+2
+  image_picker: ^0.8.7+1
+  firebase_storage: ^11.1.0
 
 dev_dependencies:
   flutter_test:
