@@ -58,6 +58,11 @@ class _ProfileState extends State<Profile> {
           photoUrl = snapshot.docs.first.get('profilePic');
           _isUserHasPhoto = true;
         });
+      } else {
+        setState(() {
+          photoUrl = "";
+          _isUserHasPhoto = false;
+        });
       }
     } catch (e) {
       setState(() {

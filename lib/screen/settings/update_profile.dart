@@ -27,6 +27,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   String photoUrl = "";
   var genderOptions = ['Unknown', 'Male', 'Female', 'Others'];
   bool isGoogleAuthProvider = false;
+  bool _isPhotoLoading = false;
   bool _isloading = false;
   bool _isUserHasPhoto = false;
   AuthenticationService authenticationService = AuthenticationService();
@@ -57,7 +58,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 onTap: () async {
                   Navigator.pop(context);
                   setState(() {
-                    _isloading = true;
+                    _isPhotoLoading = true;
                   });
                   // Check if the user already has a profile photo
                   if (_isUserHasPhoto) {
@@ -112,7 +113,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       }
                       setState(() {
                         _isUserHasPhoto = true;
-                        _isloading = false;
+                        _isPhotoLoading = false;
                       });
                     } catch (e) {
                       throw (e);
@@ -134,7 +135,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 onTap: () async {
                   Navigator.pop(context);
                   setState(() {
-                    _isloading = true;
+                    _isPhotoLoading = true;
                   });
                   // Check if the user already has a profile photo
                   if (_isUserHasPhoto) {
@@ -189,7 +190,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       }
                       setState(() {
                         _isUserHasPhoto = true;
-                        _isloading = false;
+                        _isPhotoLoading = false;
                       });
                     } catch (e) {
                       throw (e);
@@ -208,7 +209,53 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       color: Colors.blueGrey,
                     ),
                   ),
-                  onTap: () {}),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    setState(() {
+                      _isPhotoLoading = true;
+                    });
+                    // Check if the user already has a profile photo
+                    if (_isUserHasPhoto) {
+                      try {
+                        Uri uri = Uri.parse(photoUrl);
+                        String path = uri.path;
+                        String fileName = path.split('/').last;
+                        Reference ref = FirebaseStorage.instance
+                            .ref()
+                            .child('images/$fileName');
+                        try {
+                          await ref.delete();
+                          setState(() {
+                            _isUserHasPhoto = false;
+                            photoUrl = "";
+                          });
+                        } catch (e) {
+                          print(e);
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                    }
+                    try {
+                      // upload the image into Firebase Storage as empty
+                      setState(() {
+                        photoUrl = "";
+                      });
+                      final userPhotoSnapShot =
+                          await dataBaseService.gettingUserData(email);
+                      if (userPhotoSnapShot.docs.isNotEmpty) {
+                        final userDocument = userPhotoSnapShot.docs.first;
+                        await userDocument.reference
+                            .update({"profilePic": photoUrl});
+                      }
+                      setState(() {
+                        _isUserHasPhoto = false;
+                        _isPhotoLoading = false;
+                      });
+                    } catch (e) {
+                      throw (e);
+                    }
+                  }),
             ],
           );
         });
@@ -408,15 +455,25 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       Stack(
                         children: [
                           _isUserHasPhoto
-                              ? CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: NetworkImage(photoUrl),
-                                )
-                              : const CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage:
-                                      AssetImage('assets/images/profile.png'),
-                                ),
+                              ? _isPhotoLoading
+                                  ? CircularProgressIndicator(
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                    )
+                                  : CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: NetworkImage(photoUrl),
+                                    )
+                              : _isPhotoLoading
+                                  ? CircularProgressIndicator(
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: AssetImage(
+                                          'assets/images/profile.png'),
+                                    ),
                           Positioned(
                             bottom: -15,
                             right: -13,
