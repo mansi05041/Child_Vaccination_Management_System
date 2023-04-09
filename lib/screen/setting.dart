@@ -16,24 +16,25 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          title: const Text(
-            'Settings',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: const Text(
+          'Settings',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
-          toolbarHeight: 80,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(Icons.people_alt),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const MyHomePage()),
-              );
-            },
-          )),
+        ),
+        toolbarHeight: 80,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Icons.people_alt),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const MyHomePage()),
+            );
+          },
+        ),
+      ),
       body: Container(
         child: ListView(
           padding: EdgeInsets.zero,
