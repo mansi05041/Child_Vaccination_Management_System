@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 
 class MessageComposer extends StatelessWidget {
-  final void Function(String) onSubmitted;
-  final bool awaitingResponse;
   MessageComposer({
     required this.onSubmitted,
     required this.awaitingResponse,
@@ -12,15 +10,18 @@ class MessageComposer extends StatelessWidget {
 
   final TextEditingController _messageController = TextEditingController();
 
+  final void Function(String) onSubmitted;
+  final bool awaitingResponse;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.05),
+      color: Theme.of(context).primaryColor.withOpacity(0.05),
       child: SafeArea(
         child: Row(
           children: [
-            Flexible(
+            Expanded(
               child: !awaitingResponse
                   ? TextField(
                       keyboardType: TextInputType.multiline,

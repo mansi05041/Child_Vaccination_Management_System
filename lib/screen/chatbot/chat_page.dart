@@ -38,26 +38,22 @@ class _ChatPageState extends State<ChatPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        centerTitle: true,
         toolbarHeight: 80,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.blueGrey,
         automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [
           Expanded(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.8,
-              child: ListView(
-                children: [
-                  ..._messagesShow.map(
-                    (msg) => MessageBubble(
-                      content: msg.content,
-                      isUserMessage: msg.isUserMessage,
-                    ),
+            child: ListView(
+              children: [
+                ..._messagesShow.map(
+                  (msg) => MessageBubble(
+                    content: msg.content,
+                    isUserMessage: msg.isUserMessage,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           MessageComposer(
@@ -70,6 +66,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _onSubmitted(String message) async {
+    // print(_messages);
     setState(() {
       _messagesSend.add(ChatMessage(message, true));
       _messagesShow.add(ChatMessage(message, true));
