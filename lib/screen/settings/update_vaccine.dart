@@ -1,4 +1,4 @@
-import 'package:child_vaccination/screen/setting.dart';
+import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:child_vaccination/screen/settings/update_child.dart';
 import 'package:child_vaccination/screen/settings/update_profile.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +26,10 @@ class _UpdateVaccineState extends State<UpdateVaccine> {
         toolbarHeight: 80,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.settings),
+          icon: Icon(Icons.people_alt),
           onPressed: () {
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const SettingPage()),
+              MaterialPageRoute(builder: (context) => const MyHomePage()),
             );
           },
         ),
