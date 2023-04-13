@@ -1,7 +1,7 @@
 import 'package:child_vaccination/screen/vaccine.dart';
 import 'package:flutter/material.dart';
 
-class ChildTile extends StatefulWidget {
+class ChildTile extends StatelessWidget {
   final String childName;
   final String childId;
 
@@ -9,51 +9,56 @@ class ChildTile extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<ChildTile> createState() => _ChildTileState();
-}
-
-class _ChildTileState extends State<ChildTile> {
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Column(
-        children: [
-          const SizedBox(height: 10),
-          ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.black,
-              child: Text(
-                widget.childName.substring(0, 1).toUpperCase(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [_buildPlanCard(context, childName)],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlanCard(BuildContext context, String ChildName) {
+    return Card(
+      color: Theme.of(context).primaryColor,
+      elevation: 2.0,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              childName.toUpperCase(),
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.07,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            trailing: ElevatedButton(
+            ElevatedButton(
               onPressed: () {
                 // show the vaccine Details of children
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => VaccinePage(childId: widget.childId),
+                    builder: (context) => VaccinePage(childId: childId),
                   ),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueGrey, // Change the color here
+                backgroundColor: Colors.blueGrey,
               ),
               child: const Text("Vaccine Details",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontWeight: FontWeight.w600,
                   )),
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
