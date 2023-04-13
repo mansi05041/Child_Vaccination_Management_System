@@ -1,7 +1,7 @@
 import 'package:child_vaccination/helper/helperFunction.dart';
 import 'package:child_vaccination/screen/LoginPage.dart';
 import 'package:child_vaccination/screen/ResetPassword.dart';
-import 'package:child_vaccination/screen/setting.dart';
+import 'package:child_vaccination/screen/settings/update_profile.dart';
 import 'package:child_vaccination/services/authenticationService.dart';
 import 'package:child_vaccination/services/databaseService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -91,7 +91,8 @@ class _ProfileState extends State<Profile> {
             ListTile(
               onTap: () async {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const SettingPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const UpdateProfile()),
                 );
               },
               contentPadding:
