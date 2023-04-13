@@ -79,6 +79,7 @@ class _ChildPageState extends State<ChildPage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         automaticallyImplyLeading: false,
+        title: Text('Child Details'),
       ),
       body: childList(),
       floatingActionButton: FloatingActionButton(
