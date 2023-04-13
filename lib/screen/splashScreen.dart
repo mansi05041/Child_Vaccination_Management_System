@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:child_vaccination/screen/MyHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:child_vaccination/main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
