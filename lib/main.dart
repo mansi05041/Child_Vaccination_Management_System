@@ -1,7 +1,6 @@
 import 'package:child_vaccination/helper/helperFunction.dart';
 import 'package:child_vaccination/screen/LoginPage.dart';
 import 'package:child_vaccination/screen/MyHomePage.dart';
-import 'package:child_vaccination/screen/pages/Profile.dart';
 import 'package:child_vaccination/screen/splashScreen.dart';
 import 'package:child_vaccination/shared/Constant.dart';
 import 'package:flutter/foundation.dart';
