@@ -23,14 +23,18 @@ class MessageComposer extends StatelessWidget {
           children: [
             Expanded(
               child: !awaitingResponse
-                  ? TextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      controller: _messageController,
-                      onSubmitted: onSubmitted,
-                      decoration: const InputDecoration(
-                        hintText: 'Write your message here...',
-                        border: InputBorder.none,
+                  ? SizedBox(
+                      height: MediaQuery.of(context).size.height *
+                          0.07, // set the height to 20% of the screen height
+                      child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        controller: _messageController,
+                        onSubmitted: onSubmitted,
+                        decoration: const InputDecoration(
+                          hintText: 'Write your message here...',
+                          border: InputBorder.none,
+                        ),
                       ),
                     )
                   : Row(
