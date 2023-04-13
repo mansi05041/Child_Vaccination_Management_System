@@ -1,3 +1,4 @@
+import 'package:child_vaccination/screen/settings/update_child.dart';
 import 'package:child_vaccination/services/databaseService.dart';
 import 'package:child_vaccination/widget/vaccineTile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -50,6 +51,18 @@ class _VaccinePageState extends State<VaccinePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const UpdateChild()),
+                );
+              },
+              icon: const Icon(
+                Icons.settings,
+                color: Colors.white,
+              )),
+        ],
       ),
       body: _isLoading
           ? Center(
