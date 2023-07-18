@@ -57,7 +57,7 @@ class AuthenticationService {
 
           // fetch the google photo url
           final String? photoUrl = currentUser?.photoUrl;
-          DataBaseService(uid: user.uid).userProfileUpdate(photoUrl!);
+          await DataBaseService(uid: user.uid).userProfileUpdate(photoUrl!);
         }
         // saving the shared prefernce state
         await HelperFunction.saveUserLoggedInStatus(true);
